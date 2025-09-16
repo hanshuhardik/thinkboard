@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
+import api from "./lib/axios";
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -33,7 +34,7 @@ export default function AuthPage() {
       const email=formData.email;
       const password=formData.password;
       try {
-      const user=await axios.post("http://localhost:5001/api/users/create",
+      const user=await api.post("/users/create",
         { username,email,password});
         toast.success("User created Successfully🎉")
         console.log(user)
@@ -52,12 +53,19 @@ export default function AuthPage() {
         const email=formData.email;
       const password=formData.password;
       try {
-     const user= await axios.post("http://localhost:5001/api/users/login",
+     const res= await api.post("/users/login",
         { email,password});
-        toast.success("User login Successfully🎉")
-        console.log(user.data._id);
-        localStorage.setItem("id",user.data._id)
-        navigate("/home")
+        if (res.data && res.data.user.id) {
+    toast.success("User login Successfully 🎉");
+
+    // Save immediately
+    localStorage.setItem("id", res.data.user.id);
+
+    // Then navigate
+    navigate("/home");
+  } else {
+    toast.error("Login failed: user id missing");
+  }
     } catch (error) {
         console.log(error);
         if(error.response?.status==400){

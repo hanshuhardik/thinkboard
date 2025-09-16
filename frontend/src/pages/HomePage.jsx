@@ -5,6 +5,7 @@ import axios from 'axios';
 import NoteCard from '../components/NoteCard';
 import { Link, useNavigate } from 'react-router';
 import NotesNotFound from '../components/NotesNotFound';
+import api from '../lib/axios';
 const HomePage = () => {
    
   const [isRateLimited,setIsRateLimited]=useState(false);
@@ -15,7 +16,7 @@ const HomePage = () => {
   useEffect(()=>{
     const fetchNotes=async()=>{
       try {
-        const res=await axios.get(`http://localhost:5001/api/notes/user/${userid}`,)
+        const res=await api.get(`/notes/user/${userid}`)
         setNotes(res.data);
         console.log(res.data)
         setIsRateLimited(false);

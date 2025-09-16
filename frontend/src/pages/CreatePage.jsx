@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 import { createRoutesFromElements, Link, useNavigate } from 'react-router';
 import axios from "axios";
+import api from '../lib/axios';
 const CreatePage = () => {
   const[title,setTitle]=useState("");
   const[content,setContent]=useState("");
@@ -19,7 +20,7 @@ const CreatePage = () => {
     const userid=localStorage.getItem("id");
     setLoading(true);
     try {
-      await axios.post("http://localhost:5001/api/notes",
+      await api.post("/notes",
         {title,content,userid})
         toast.success("New Note created Successfully🎉")
         navigate("/home")
