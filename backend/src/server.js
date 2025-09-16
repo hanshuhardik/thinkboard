@@ -23,8 +23,8 @@ app.use(express.json());
 app.use(rateLimiter);
 
 app.use("/api/notes", notesRoutes);
-
 app.use("/api/users", userRoutes);
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
